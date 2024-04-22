@@ -1,0 +1,1565 @@
+HJ5.进制转换
+
+#include <iostream>
+#include <cmath>
+#include <string>
+using namespace std;
+
+int main() {
+    string str;
+    while (cin >> str)
+    {
+        int sum = 0;
+        for (int i = str.size() - 1; i >= 0; i--)
+        {
+            if (str[i] >= '0' && str[i] <= '9')
+            {
+                sum += (str[i] - '0') * pow(16, str.size() - 1 - i);
+            }
+            else if(str[i] >= 'A' && str[i] <= 'F')
+            {
+                sum += (str[i] - 55) * pow(16, str.size() - 1 - i);
+            }
+            else if (str[i] >= 'a' && str[i] <= 'f')
+            {
+                sum += (str[i] - 87) * pow(16, str.size() - 1 - i);
+            }
+        }
+
+        cout << sum << endl;
+    }
+    return 0;
+}
+
+
+NC61.两数之和
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int> vec, int target) {
+        unordered_map<int, int> hash;
+
+        for (int i = 0; i < vec.size(); i++)
+        {
+            auto iter = hash.find(target - vec[i]);
+            if (iter != hash.end())
+            {
+                return {iter->second, i};
+            }
+            else
+            {
+                hash[vec[i]] = i;
+            }
+        }
+    }
+};
+
+
+HJ3.明明的随机数
+方法一：
+int DeduplicateAndSort(vector<int> &nums)
+{
+	sort(nums.begin(), nums.end());
+	nums.erase(unique(nums.begin(), nums.end()), nums.end());
+	return nums.size();
+}
+
+方法二：
+void Bubble(vector<int>& nums)
+{
+	int length = nums.size() - 1;
+	int temp = 0;
+	for (int i = 0; i < length; i++)
+	{
+		for (int j = 0; j < length - i; j++)
+		{
+			if (nums[j] > nums[j + 1])
+			{
+				temp = nums[j];
+				nums[j] = nums[j + 1];
+				nums[j + 1] = temp;
+			}
+		}
+	}
+}
+
+int UniqueAndSortTwo(vector<int>& nums)
+{
+	Bubble(nums);
+	nums.erase(unique(nums.begin(), nums.end()), nums.end());
+	return nums.size();
+}
+
+方法三：
+int main()
+{
+	int N = 0;
+	int a[1000] = { 0 };
+
+	cin >> N;
+	int t = 0;
+	for (int i = 0; i < N; i++) 
+	{
+		cin >> t;
+		if (a[t] == 0)
+		{
+			a[t] = t;
+		}
+	}
+
+	for (int j = 0; j < 1000; j++)
+	{
+		if (a[j] != 0)
+		{
+			cout << a[j] << " ";
+		}
+	}
+	cout << endl;
+
+}
+
+HJ10.字符个数统计
+方法一：
+int StringCount(string& str)
+{
+	map<char, int> m;
+	int length = str.size();
+	for (int i = 0; i < length; i++)
+	{
+		if (m[str[i]] == 0)
+		{
+			m[str[i]] = 1;
+		}
+	}
+	return m.size();
+}
+
+
+方法二：
+int StringCount2(string& str)
+{
+	unordered_set<char> set_c;
+	for (int i = 0; i < str.length(); i++)
+	{
+		set_c.insert(str[i]);
+	}
+
+	return set_c.size();
+}
+
+
+
+递归：NC68.跳台阶
+
+int JumpFloor(int n)
+{
+	if (n == 0)
+		return 0;
+	if (n == 1)
+		return 1;
+	if (n == 2)
+		return 2;
+	if (n > 2)
+		return JumpFloor(n - 1) + JumpFloor(n - 2);
+}
+
+int JumpFloor2(int n)
+{
+	if (n == 0)
+		return 0;
+	if (n == 1)
+		return 1;
+	if (n == 2)
+		return 2;
+
+	int i = 1;
+	int j = 2;
+	int res = 0;
+	for (int k = 2; k < n; k++)
+	{
+		res = i + j;
+		i = j;
+		j = res;
+	}
+
+	return res;
+}
+
+
+
+HJ20.密码验证合格程序
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+bool CheckSubstr(string &str)
+{
+	for (size_t i = 3; i < str.length(); i++)
+	{
+		for (size_t j = 0; j < str.length() - i; j++)
+		{
+			string strtmp = str.substr(j, i);
+			int pos = str.find(strtmp, j + i);
+			if (pos != string::npos)
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+bool CheckPasswd(string str)
+{
+	if (str.size() <= 8)
+	{
+		return false;
+	}
+
+	int a[4] = { 0 };
+	for (size_t i = 0; i < str.length(); i++)
+	{
+		if (str[i] >= 'A' && str[i] <= 'Z')
+		{
+			a[0] = 1;
+		}
+		else if (str[i] >= 'a' && str[i] <= 'z')
+		{
+			a[1] = 1;
+		}
+		else if (str[i] >= '0' && str[i] <= '9')
+		{
+			a[2] = 1;
+		}
+		else
+		{
+			a[3] = 1;
+		}
+	}
+
+	if (a[0] + a[1] + a[2] + a[3] < 3)
+	{
+		return false;
+	}
+
+	if (!CheckSubstr(str))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+int main()
+{
+	string str;
+	while (cin >> str)
+	{
+		if (CheckPasswd(str))
+		{
+			cout << "OK" << endl;
+		}
+		else
+		{
+			cout << "NG" << endl;
+		}
+	}
+	return 0;
+}
+
+HJ17.坐标移动
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+struct Point
+{
+	int X;
+	int Y;
+	Point(int x, int y):X(x),Y(y){}
+};
+
+bool CheckCoordinate(const string &strTmp, char &direction, int &length)
+{
+	cout << "strTmp:" << strTmp << endl;
+
+	if (!(strTmp[0] == 'A' || strTmp[0] == 'D' || strTmp[0] == 'W' || strTmp[0] == 'S'))
+	{
+		return false;
+	}
+
+	for (size_t i = 1; i < strTmp.length(); i++)
+	{
+		if (strTmp[i] < '0' || strTmp[i] > '9')
+		{
+			return false;
+		}
+	}
+
+	direction = strTmp[0];
+
+	string str = strTmp.substr(1);
+	length = atoi(str.c_str());
+	return true;
+}
+
+Point CountCoordinate(string &str)
+{
+	int pos = 0;
+	char direction = 0;
+	int length = 0;
+	Point p(0,0);
+	while (!str.empty())
+	{
+		string strTmp;
+		pos = str.find(";");
+		if (pos != string::npos)
+		{
+			strTmp = str.substr(0, pos);
+			if (CheckCoordinate(strTmp, direction, length))
+			{
+				if (direction == 'A')
+				{
+					p.X -= length;
+				}
+				else if (direction == 'D')
+				{
+					p.X += length;
+				}
+				else if (direction == 'W')
+				{
+					p.Y += length;
+				}
+				else if (direction == 'S')
+				{
+					p.Y -= length;
+				}
+			}
+
+			str = str.substr(pos + 1);
+		}
+	}
+
+	return p;
+}
+
+int main()
+{
+	string str;
+	cin >> str;
+	Point p = CountCoordinate(str);
+	cout << "x:" << p.X << " y:" << p.Y << endl;
+
+
+	return 0;
+}
+
+
+HJ23 删除字符串中出现次数最少的字符
+
+#include <string>
+#include <iostream>
+#include <map>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+void DeleteString(string& str)
+{
+	int c_str[128] = { 0 };
+	for (size_t i = 0; i < str.length(); i++)
+	{
+		c_str[str[i]]++;
+	}
+	
+	vector<char> c_vec;
+	int min = 128;
+	for (size_t i = 0; i < 128; i++)
+	{
+		if (c_str[i]!= 0 && min > c_str[i])
+		{
+			min = c_str[i];
+		}
+	}
+
+	for (size_t i = 0; i < 128; i++)
+	{
+		if (min == c_str[i])
+		{
+			c_vec.push_back(i);
+		}
+	}
+
+	for (size_t i = 0; i < c_vec.size(); i++)
+	{
+		str.erase(remove(str.begin(), str.end(), c_vec[i]), str.end());
+		cout << str << endl;
+	}
+
+}
+
+int main()
+{
+	string str;
+	cin >> str;
+
+	DeleteString(str);
+	return 0;
+}
+
+
+方法二：
+
+#include <iostream>
+#include <string>
+#include <map>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	
+	string str;
+	cin >> str;
+
+	map<char, int> c_map;
+	for (size_t i = 0; i < str.length(); i++)
+	{
+		c_map[str[i]]++;
+	}
+
+	int length = INT_MAX;
+	map<char, int>::iterator iter = c_map.begin();
+	for(; iter != c_map.end(); ++iter)
+	{
+		if (length > iter->second)
+		{
+			length = iter->second;
+		}
+	}
+
+	for (char c : str) {
+		if (c_map[c] > length) {
+			cout << c;
+		}
+	}
+
+
+	return 0;
+}
+
+
+
+整数与IP地址间的转换
+
+string DecToBin2(int num)
+{
+	string strBin;
+	while (num > 0)
+	{
+		int i = num % 2;
+		strBin += to_string(i);
+		num = num / 2;
+	}
+
+	reverse(strBin.begin(), strBin.end());
+	return strBin;
+}
+
+string DecToBin(int num)
+{
+	string strBin;
+	if (num == 0)
+	{
+		return string(8, '0');
+	}
+
+	
+	while (num > 0)
+	{
+		int i = num % 2;
+		strBin += to_string(i);
+		num = num / 2;
+	}
+
+	
+	strBin += string(8 - strBin.size(), '0');
+	reverse(strBin.begin(), strBin.end());
+
+	
+
+	return strBin;
+}
+
+int BinToDec(string str)
+{
+	int result = 0;
+
+	int len = str.length() - 1;
+	for (int i = 0; i < str.length(); i++)
+	{
+		result += (str[i] - '0') * pow(2, len--);
+	}
+	return result;
+}
+
+
+string NumToIP(int num)
+{
+	string str = DecToBin2(num);
+	string strBin;
+	if (strBin.size() < 32)
+	{
+		int n = 32 - str.size();
+		strBin = string(n, '0') + str;
+	}
+
+	string strIP;
+	int start = 0;
+	int end = 8;
+	while (!strBin.empty())
+	{
+		string strTmp = strBin.substr(0, 8);
+		strBin = strBin.substr(8);
+		
+		int n = BinToDec(strTmp);
+		strIP += to_string(n);
+		strIP += ".";
+	}
+
+	strIP = strIP.substr(0, strIP.size() - 1);
+	return strIP;
+}
+
+int IPToNum(string strIP)
+{
+	//把每个数字从字符串中截取出来
+	string strBin;
+	while (1)
+	{
+		int pos = strIP.find(".");
+		if (pos != string::npos)
+		{
+			string strNum = strIP.substr(0, pos);
+			strIP = strIP.substr(pos + 1);
+			strBin += DecToBin(atoi(strNum.c_str()));
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	strBin += DecToBin(atoi(strIP.c_str()));
+
+	return BinToDec(strBin);
+}
+
+/*int main()
+{
+	string strIP;
+	int numIP;
+
+	cin >> numIP;
+	cout << NumToIP(numIP) << endl;
+
+	cin >> strIP;
+	cout << IPToNum(strIP) << endl;
+	return 0;
+}*/
+
+int main()
+{
+	int a = 0, b = 0, c = 0, d = 0;
+	int temp = 0;
+	while (scanf_s("%d.%d.%d.%d", &a, &b, &c, &d) !=EOF)
+	{
+		scanf_s("%d", &temp);
+
+		int n = (a << 24) + (b << 16) + (c << 8) + d;
+		printf("%d\n", n);
+
+		a = (temp & 0xff000000) >> 24;
+		b = (temp & 0x00ff0000) >> 16;
+		c = (temp & 0x0000ff00) >> 8;
+		d = (temp & 0x000000ff);
+		printf("%d.%d.%d.%d\n", a, b, c, d);
+	}
+}
+
+
+HJ101.输入整型数组和排序标识
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+void buddlesort(vector<int>& i_vec, int i_flag)
+{
+	for (size_t i = 0; i < i_vec.size() - 1; i++)
+	{
+		for (size_t j = 0; j < i_vec.size() - 1 - i; j++)
+		{
+			if (!i_flag)
+			{
+				if (i_vec[j] > i_vec[j + 1])
+				{
+					int temp = i_vec[j];
+					i_vec[j] = i_vec[j + 1];
+					i_vec[j + 1] = temp;
+				}
+			}
+			else
+			{
+				if (i_vec[j] < i_vec[j + 1])
+				{
+					int temp = i_vec[j];
+					i_vec[j] = i_vec[j + 1];
+					i_vec[j + 1] = temp;
+				}
+			}
+		}
+	}
+}
+
+int main()
+{
+	int N = 0;
+	vector<int> i_vec;
+	int i_flag;
+
+	cin >> N;
+
+	int val = 0;
+	for (size_t i = 0; i < N; i++)
+	{
+		cin >> val;
+		i_vec.push_back(val);
+	}
+
+	cin >> i_flag;
+
+	/*if (!i_flag)
+	{
+		sort(i_vec.begin(), i_vec.end());
+	}
+	else
+	{
+		auto cmp = [=](int x, int y) -> bool { return x > y; };
+		sort(i_vec.begin(), i_vec.end(), cmp);
+	}*/
+
+	buddlesort(i_vec, i_flag);
+
+	for (size_t i = 0; i < i_vec.size(); i++)
+	{
+		cout << i_vec[i] << " ";
+	}
+	cout << endl;
+}
+
+
+
+
+
+华为机试HJ106：字符逆序
+
+#include <string>
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+void ReverseString(string& str)
+{
+	int left = 0;
+	int right = str.size() - 1;
+	while (left < right)
+	{
+		int c = str[left];
+		str[left] = str[right];
+		str[right] = c;
+
+		left++;
+		right--;
+	}
+}
+
+int main()
+{
+	string str;
+	while (getline(cin, str))
+	{
+		//reverse(str.begin(), str.end());
+		ReverseString(str);
+		cout << str << endl;
+	}
+
+	return 0;
+}
+
+
+3.排序（5题）
+(1) HJ8.合并表记录
+
+#include <string>
+#include <map>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int N = 0;
+	cin >> N;
+
+	map<int, int> indexMapValue;
+	for (size_t i = 0; i < N; i++)
+	{
+		pair<int, int> temp;
+		cin >> temp.first;
+		cin >> temp.second;
+
+		if (indexMapValue.find(temp.first) != indexMapValue.end())
+		{
+			indexMapValue[temp.first] += temp.second;
+		}
+		else
+		{
+			indexMapValue[temp.first] = temp.second;
+		}
+	}
+
+	map<int, int>::iterator iter = indexMapValue.begin();
+	for (; iter != indexMapValue.end(); ++iter)
+	{
+		cout << iter->first << " " << iter->second << endl;
+	}
+
+
+	return 0;
+}
+
+
+(2) *HJ14.字符串排序
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+
+int main()
+{
+	int N = 0;
+	vector<string> str_vec;
+	cin >> N;
+	string str;
+	for (size_t i = 0; i < N; i++)
+	{
+		cin >> str;
+		str_vec.push_back(str);
+	}
+
+	cout << endl;
+
+	sort(str_vec.begin(), str_vec.end());
+
+	for (size_t i = 0; i < str_vec.size(); i++)
+	{
+		cout << str_vec[i] << endl;
+	}
+
+
+}
+
+
+(3) HJ27.查找兄弟单词
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int N = 0;
+	vector<string> str_vec;
+	string str;
+
+	cin >> N;
+	for (size_t i = 0; i < N; i++)
+	{
+		cin >> str;
+		str_vec.push_back(str);
+	}
+
+	string str_flag;
+	cin >> str_flag;
+
+	int k = 0;
+	cin >> k;
+
+	map<char, int> flag_map;
+	for (size_t i = 0; i < str_flag.length(); i++)
+	{
+		flag_map[str_flag[i]]++;
+	}
+
+	vector<string> result_vec;
+	for (size_t i = 0; i < str_vec.size(); i++)
+	{
+		map<char, int> str_map;
+		string str = str_vec[i];
+		for (size_t j = 0; j < str.size(); j++)
+		{
+			str_map[str[j]]++;
+		}
+
+		if (str_map.size() == flag_map.size())
+		{
+			bool flag = true;
+			for (size_t i = 0; i < str_flag.length(); i++)
+			{
+				if (str_map[str_flag[i]] != flag_map[str_flag[i]])
+				{
+					flag = false;
+					break;
+				}
+			}
+
+			if (flag)
+			{
+				result_vec.push_back(str);
+			}
+			
+		}
+
+	}
+
+	result_vec.erase(remove(result_vec.begin(), result_vec.end(), str_flag), result_vec.end());
+
+	sort(result_vec.begin(), result_vec.end());
+
+	if (result_vec.size() >= k)
+	{
+		cout << result_vec.size() << endl;
+		cout << result_vec[k - 1] << endl;
+	}
+	else
+	{
+		cout << "0" << endl;
+	}
+
+	return 0;
+}
+
+
+(4) *NC37.合并区间
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+struct Interval
+{
+	int start;
+	int end;
+	Interval():start(0), end(0){}
+	Interval(int s, int e) :start(s), end(s) {};
+};
+
+class Solution {
+public:
+    /**
+     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+     *
+     *
+     * @param intervals Interval类vector
+     * @return Interval类vector
+     */
+    vector<Interval> merge(vector<Interval>& intervals) {
+        sort(intervals.begin(), intervals.end(), [](Interval& a, Interval& b) { return a.start > a.end; });
+
+        vector<Interval> result;
+
+        result.push_back(intervals[0]);
+        for (size_t i = 1; i < intervals.size(); i++)
+        {
+            if (result[result.size() - 1].end < intervals[i].start)
+            {
+                result.push_back(intervals[i]);
+
+            }
+            else
+            {
+                 result[result.size() - 1].start = min(result[result.size() - 1].start, intervals[i].start);
+                 result[result.size() - 1].end = max(result[result.size() - 1].end, intervals[i].end); 
+            }
+        }
+        
+    }
+};
+
+
+
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        sort(intervals.begin(), intervals.end());
+
+        vector<vector<int>> result_intervals;
+        result_intervals.push_back(intervals[0]);
+        for(int i = 1; i < intervals.size(); i++)
+        {
+            cout << intervals[i][0] << " " << intervals[i][1] << endl;
+            int len = result_intervals.size() - 1;
+            if (intervals[i][0] > result_intervals[len][1])
+            {
+                result_intervals.push_back(intervals[i]);
+            }
+            else
+            {
+                if (result_intervals[len][1] > intervals[i][1])
+                {
+                    continue;
+                }
+                else
+                {
+                   result_intervals[len][1] = intervals[i][1];
+                }
+            }
+        }
+
+        return result_intervals;
+    }
+};
+
+
+(5) *HJ68.成绩排序
+
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+struct scores
+{
+	string user;
+	int score;
+};
+
+int main()
+{
+	int N = 0;
+	int sortRules = 0;
+
+	vector<scores> vec_score;
+	
+	cin >> N;
+	cin >> sortRules;
+
+	for (size_t i = 0; i < N; i++)
+	{
+		scores tmp;
+		cin >> tmp.user;
+		cin >> tmp.score;
+		vec_score.push_back(tmp);
+	}
+
+	if (!sortRules)
+	{
+		stable_sort(vec_score.begin(), vec_score.end(), [](const scores& a, const scores& b) { return a.score > b.score; });
+		
+	}
+	else
+	{
+		stable_sort(vec_score.begin(), vec_score.end(), [](const scores& a, const scores& b) { return a.score < b.score; });
+	}
+	
+	for (size_t i = 0; i < vec_score.size(); i++)
+	{
+		cout << vec_score[i].user << " " << vec_score[i].score << endl;
+	}
+
+	return 0;
+}
+
+
+
+4.栈（2题）
+(1) NC52.括号序列
+
+#include <iostream>
+#include <string>
+#include <stack>
+
+using namespace std;
+
+bool IsMatch(string& str)
+{
+	stack<char> st;
+	for (size_t i = 0; i < str.length(); i++)
+	{
+		switch (str[i])
+		{
+		case '(':
+		case '[':
+		case '{':
+			st.push(str[i]);
+			break;
+		case ')':
+			if (!st.empty() && st.top() == '(')
+			{
+				st.pop();
+			}
+			else
+			{
+				return false;
+			}
+			
+			break;
+		case ']':
+			if (!st.empty() && st.top() == '[')
+			{
+				st.pop();
+			}
+			else
+			{
+				return false;
+			}
+
+			break;
+		case '}':
+			if (!st.empty() && st.top() == '{')
+			{
+				st.pop();
+			}
+			else
+			{
+				return false;
+			}
+
+			break;
+		}
+	}
+
+	return true;
+}
+
+int main()
+{
+	string str;
+	cin >> str;
+	
+
+	if (IsMatch(str))
+	{
+		cout << "true" << endl;
+	}
+	else
+	{
+		cout << "false" << endl;
+	}
+	return 0;
+}
+
+(2) *leetcode 1614.括号的最大嵌套深度
+
+int maxDepth(string s) 
+{
+	stack<char> st;
+	int length = 0;
+	int maxlength = 0;
+	for (size_t i = 0; i < s.length(); i++)
+	{
+		switch (s[i])
+		{
+		case '(':
+			st.push(s[i]);
+			break;
+		case ')':
+			st.pop();
+			break;
+		default:
+			break;
+		}
+
+		length = st.size();
+		if (maxlength < length)
+		{
+			maxlength = length;
+		}
+	}
+
+	return maxlength;
+}
+
+
+5.排列组合（2题）
+(1) *leetcode 面试题08.08.有重复字符串的排列组合
+
+#include <iostream>
+#include <string>
+#include <unordered_set>
+#include <algorithm>
+
+using namespace std;
+
+class permutation
+{
+public:
+	 void Permutation(unordered_set<string> &strset, string str)
+	{
+		 dfs(strset, str, 0);
+	}
+
+
+	 void dfs(unordered_set<string>& strset, string &str, int start)
+	 {
+		 if (start == str.size())
+		 {
+			 strset.insert(str);
+			 return;
+		 }
+
+		 for (size_t i = start; i < str.length(); i++)
+		 {
+			 swap(str[start], str[i]);
+			 dfs(strset, str, start+1);
+			 swap(str[start], str[i]);
+		 }
+	 }
+};
+
+int main()
+{
+	string str;
+	cin >> str;
+	permutation per;
+
+	unordered_set<string> strset;
+	per.Permutation(strset, str);
+
+	unordered_set<string>::iterator iter = strset.begin();
+	for (size_t i = 0; iter != strset.end(); iter++)
+	{
+		cout << *iter << " ";
+	}
+	cout << endl;
+
+	return 0;
+}
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class permutation
+{
+public:
+	 void Permutation(vector<string> &strset, string str)
+	{
+		 dfs(strset, str, 0);
+	}
+
+
+	 void dfs(vector<string>& strset, string &str, int start)
+	 {
+		 if (start == str.size())
+		 {
+			 strset.push_back(str);
+			 return;
+		 }
+
+		 for (size_t i = start; i < str.length(); i++)
+		 {
+			 bool isContinue = true;
+			 for (size_t j = start; j < i; j++)
+			 {
+				 if (str[j] == str[i])
+				 {
+					 isContinue = false;
+					 break;
+				 }
+			 }
+
+			 if (!isContinue)
+			 {
+				 continue;
+			 }
+
+			 swap(str[start], str[i]);
+			 dfs(strset, str, start+1);
+			 swap(str[start], str[i]);
+		 }
+	 }
+};
+
+int main()
+{
+	string str;
+	cin >> str;
+	permutation per;
+
+	vector<string> strset;
+	per.Permutation(strset, str);
+
+	vector<string>::iterator iter = strset.begin();
+	for (; iter != strset.end(); iter++)
+	{
+		cout << *iter << " ";
+	}
+	cout << endl;
+
+	return 0;
+}
+
+
+(2) leetcode 77.组合
+
+class Solution {
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int>> n_vec;
+        vector<int> tmp_vec;
+        dfs(n_vec, tmp_vec, n, k, 1);
+
+        return n_vec;
+    }
+
+    void dfs(vector<vector<int>> &n_vec, vector<int> &tmp_vec, int n, int k, int index)
+    {
+        if (tmp_vec.size() == k)
+        {
+            n_vec.push_back(tmp_vec);
+            return;
+        }
+
+        for(int i = index; i <= n; i++)
+        {
+            tmp_vec.push_back(i);
+            dfs(n_vec, tmp_vec, n, k, i+1);
+            tmp_vec.pop_back();
+        }
+
+    }
+};
+
+
+6.双指针（3题）
+(1) *leetcode 674.最长连续递增序列
+class Solution {
+public:
+    int findLengthOfLCIS(vector<int>& nums) {
+
+        int left = 0;
+        int right = 0;
+        int maxlength = 0;
+        while(left < nums.size())
+        {
+            bool isIncrease = true;
+            for(int i = left; i < right; i++)
+            {   
+                if (nums[i] >= nums[i+1])
+                {
+                    isIncrease = false;
+                    break;
+                }
+            }
+
+            if (isIncrease)
+            {
+                int length = right - left + 1;
+                if (maxlength < length)
+                {
+                    maxlength = length;
+                }
+            }
+
+            right++;
+            if (right == nums.size())
+            {
+                left++;
+                right = left;
+            }
+        }
+
+        return maxlength;
+    }
+};
+
+
+
+
+
+(2) NC17.最长回文子串
+class Solution {
+public:
+    
+    string longestPalindrome(string s) {
+        int left = 0;
+        int right = 0;
+        int maxlength = 0;
+        string strres;
+        while(left < s.size())
+        {
+            
+            string strtmp = s.substr(left, right - left + 1);
+            string tmp = strtmp;
+            reverse(tmp.begin(), tmp.end());
+            if (tmp == strtmp && maxlength < strtmp.length())
+            {
+                maxlength = strtmp.length();
+                strres = strtmp;
+            }
+
+            right++;
+            if(right == s.size())
+            {
+                left++;
+                right = left;
+            }
+        }
+
+        return strres;
+
+    }
+};
+
+
+
+class Solution {
+public:
+    
+    string longestPalindrome(string s) {
+        int n = s.size();
+        if (n < 2)
+        {
+            return s;
+        }
+
+        int maxlen = 1;
+        int begin = 0;
+
+        vector<vector<int> > dp(n, vector<int>(n));
+        for(int i = 0; i < dp.size(); i++)
+        {
+            dp[i][i] = true;
+        }
+
+        for(int j = 1; j < n; j++)
+        {
+            for(int i = 0; i < j; i++)
+            {
+                if (s[i] != s[j])
+                    dp[i][j] = false;
+                else
+                {
+                    if (j - i < 3)
+                    {
+                        dp[i][j] = true;
+                    }
+                    else
+                    {
+                        dp[i][j] = dp[i+1][j-1];
+                    }
+                }
+
+                if (dp[i][j] && j - i + 1 > maxlen )
+                {
+                    maxlen = j - i + 1;
+                    begin = i;
+                }
+            }
+        }
+
+        return s.substr(begin, maxlen);
+    }
+};
+
+
+
+
+(3) NC28.最小覆盖子串
+
+class Solution {
+public:
+
+    bool isExist(unordered_map<char, int> &s_map, unordered_map<char, int> &t_map)
+    {
+        for(auto t:t_map)
+        {
+            if (s_map.find(t.first) == s_map.end() || s_map[t.first] < t.second)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    string minWindow(string s, string t) {
+        int n = s.size();
+        int m = t.size();
+
+        if (n < m)
+        {
+            return string("");
+        }
+
+        if (s == t)
+        {
+            return s;
+        }
+        
+        unordered_map<char, int> s_map;
+        unordered_map<char, int> t_map;
+
+        for(int i = 0; i < t.size(); i++)
+        {
+            t_map[t[i]]++;
+        }
+
+        int left = 0;
+        int right = 0;
+        int minlen = INT_MAX;
+        int begin = 0;
+
+        while(left < n)
+        {
+            s_map[s[right]]++;
+            if (isExist(s_map, t_map) && right - left + 1  < minlen)
+            {
+                minlen = right - left + 1;
+                begin = left;
+            }
+
+            right++;
+            if (right == n)
+            {
+                left++;
+                s_map.clear();
+                right = left;
+            }
+        }
+
+        return minlen == INT_MAX ? "" : s.substr(begin, minlen);
+
+    }
+};
+
+
+
+7.有序链表合并
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode* pHead = new ListNode(-1);
+        ListNode* pPrev = pHead;
+        while(list1 != nullptr && list2 != nullptr)
+        {
+            if (list1->val <= list2->val)
+            {
+                pPrev->next = list1;
+                list1 = list1->next;
+            }
+            else
+            {
+                pPrev->next = list2;
+                list2 = list2->next;
+            }
+
+            pPrev = pPrev->next;
+        }
+
+        pPrev->next = list1 == nullptr ? list2 : list1;
+
+        return pHead->next;
+    }
+};
+
+
+
+8.数字反转
+
+9.大小端判断
+
+10 子数组的和
+
+11 去除重复字母
+
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        unordered_map<char, int> s_map;
+        unordered_map<char, int> s_exist_map;
+        for(char c:s)
+        {
+            s_map[c]++;
+        }
+
+        string str;
+        for(char ch:s)
+        {
+            if (!s_exist_map[ch])
+            {
+                while (!str.empty() && str.back() > ch)
+                {
+                    
+                    if (s_map[str.back()] > 0)
+                    {
+                        s_exist_map[str.back()] = 0;
+                        str.pop_back();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                str.push_back(ch);
+                s_exist_map[ch] = 1;
+            }
+            s_map[ch]--;
+        }
+
+        return str;
+    }
+};

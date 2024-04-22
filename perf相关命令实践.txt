@@ -1,0 +1,83 @@
+perf统计cpu性能遇到的虚拟机无法打开的问题：https://huaweidevelopers.csdn.net/64a3935f4b952377a23e13ad.html?dp_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDk5ODQ1OSwiZXhwIjoxNzEwMjQ4NTI1LCJpYXQiOjE3MDk2NDM3MjUsInVzZXJuYW1lIjoicXFfNDA4NTI3NjEifQ.C1QqbKJyh1TtBrMRe7CroshkodNo3nURVdGlF5m32U4
+1.启动虚拟化
+2.打开控制面板-程序与功能-启用或关闭Windows功能，关闭Hyper-V、Windows沙盒，打开Windows虚拟机监控程序平台。
+3.关闭HV主机服务
+4.设备安全性-->内核隔离-->内核完整性(关闭)
+
+
+
+perf record -a --call-graph dwarf -p `ps aux | grep "xxx" | grep -v grep | cut -c 9-15` -d 1 -b
+
+-a：表示对所有CPU采样
+--call-graph dward：表示分析调用栈的关系
+-p：表示分析指定的进程
+
+top -p：指定进程
+top -d 1：指定屏幕刷新时间，1s刷新一次
+top -b：表示以批处理模式操作
+ps aux：列出所有进程
+grep：查找指定进程
+grep -v：反向查找
+cut -c 9-15：选择每行指定列的字符
+
+
+
+perf report -i perf.data > perf.txt 
+
+
+perf工具的常见用法和功能
+性能计数器（Performance Counters）：
+perf工具可以利用硬件的性能计数器来测量各种系统和应用程序的性能指标，如CPU周期数、指令数、缓存命中率等。通过指定合适的事件类型（如cycles、instructions等），可以对特定的性能指标进行监测和分析。
+示例：使用perf工具来测量一个C语言程序的CPU周期数。
+步骤：
+编译C语言程序，并确保没有进行优化（例如使用-O0选项）。
+运行perf record命令来收集性能数据：
+perf record -e cycles <your_program>
+运行perf report命令来查看性能数据报告：
+perf report
+
+
+perf stat ./perf_for
+https://zhuanlan.zhihu.com/p/445260558
+
+
+c++性能优化
+
+
+C++代码性能优化的方法
+https://blog.csdn.net/weixin_44244190/article/details/130502404
+
+C++ 高性能编程实战
+https://zhuanlan.zhihu.com/p/533708198
+https://zhuanlan.zhihu.com/p/534004366
+https://zhuanlan.zhihu.com/p/619243595
+https://zhuanlan.zhihu.com/p/619243666
+
+C/C++ 性能优化背后的方法论
+https://segmentfault.com/a/1190000039650181
+
+百度 C++ 工程师的那些极限优化
+https://zhuanlan.zhihu.com/p/375742507
+
+C++优化方法2
+https://www.zhihu.com/question/486847589
+
+C/C++语言代码优化的经验与方法
+https://mp.weixin.qq.com/s/f8s7OKg8sT4YdQ0H85vkZw
+
+
+c++相关书籍
+https://zhuanlan.zhihu.com/p/599899143
+
+shineframe : 高性能超轻量级C++开发库及服务器编程框架
+https://github.com/shineframe/shineframe
+
+《提高C++性能的编程技术》笔记
+https://zhuanlan.zhihu.com/p/97046347
+
+c++设计模式练习题
+https://kamacoder.com/designpattern.php
+
+
+
+
