@@ -928,7 +928,7 @@ https://algo.itcharge.cn/09.Algorithm-Base/
 《提高C++性能的编程技术》笔记
 https://zhuanlan.zhihu.com/p/97046347
 
-c++设计模式练习题
+c++设计模式练习题 卡玛网
 https://kamacoder.com/designpattern.php
 
 以下需要常常练习
